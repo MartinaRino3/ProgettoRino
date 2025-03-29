@@ -185,11 +185,11 @@ void AAISmart::PlayBrawler()
 	TArray<ATile*> Path = FindBestPath(BrawlerUnit->GetTile());
 	if (Path.Num() > 0)
 	{
-		GameMode->MoveUnit(BrawlerUnit, Path[Path.Num() - 1]);
-		FVector WorldLocation = Field->GetRelativeLocationByXYPosition(Path[Path.Num() - 1]->GetRow(), Path[Path.Num() - 1]->GetColumn());
+		GameMode->MoveUnit(BrawlerUnit, Path.Last());
+		FVector WorldLocation = Field->GetRelativeLocationByXYPosition(Path.Last()->GetRow(), Path.Last()->GetColumn());
 		BrawlerUnit->SetPosition(FVector (Field->GetXYPositionByRelativeLocation(WorldLocation),0));
-		BrawlerUnit->SetTile(Path[Path.Num() - 1]);
-		Path[Path.Num() - 1]->SetTileStatus(PlayerNumber,ETileStatus::BRAWLERRANDOM);
+		BrawlerUnit->SetTile(Path.Last());
+		Path.Last()->SetTileStatus(PlayerNumber,ETileStatus::BRAWLERRANDOM);
 	}
 	else
 	{
@@ -211,11 +211,11 @@ void AAISmart::PlaySniper()
 	Path = CheckNeighbours(SniperUnit->GetTile(),Path);
 	if (Path.Num() > 0)
 	{
-		GameMode->MoveUnit(SniperUnit, Path[Path.Num() - 1]);
-		FVector WorldLocation = Field->GetRelativeLocationByXYPosition(Path[Path.Num() - 1]->GetRow(), Path[Path.Num() - 1]->GetColumn());
+		GameMode->MoveUnit(SniperUnit,Path.Last());
+		FVector WorldLocation = Field->GetRelativeLocationByXYPosition(Path.Last()->GetRow(), Path.Last()->GetColumn());
 		SniperUnit->SetPosition(FVector (Field->GetXYPositionByRelativeLocation(WorldLocation),0));
-		SniperUnit->SetTile(Path[Path.Num() - 1]);
-		Path[Path.Num() - 1]->SetTileStatus(PlayerNumber,ETileStatus::SNIPERRANDOM);
+		SniperUnit->SetTile(Path.Last());
+		Path.Last()->SetTileStatus(PlayerNumber,ETileStatus::SNIPERRANDOM);
 	}
 	else
 	{

@@ -132,21 +132,24 @@ void AHumanPlayer::OnClick()
 				//Check if are already spawn and which button is being clicked
 				if (BrawlerUnit==nullptr && NumberActor < 2 && bSpawnBrawler == true)
 				{
+					bTimerFinished = false;
 					GameMode->SpawnActors(PlayerNumber,WorldLocation,"Brawler");
 					BrawlerUnit->SetTile(CurrTile);
 					BrawlerUnit->bIsBeingSearch = false;
 					CurrTile->SetTileStatus(PlayerNumber,ETileStatus::BRAWLERHUMAN);
 					NumberActor++;
+					bTimerFinished = true;
 					EndPlayerTurn();
 				}
 				else if(SniperUnit==nullptr && NumberActor < 2 && bSpawnSniper == true)
 				{
+					bTimerFinished = false;
 					GameMode->SpawnActors(PlayerNumber,WorldLocation,"Sniper");
 					SniperUnit->SetTile(CurrTile);
 					SniperUnit->bIsBeingSearch = false;
 					CurrTile->SetTileStatus(PlayerNumber,ETileStatus::SNIPERHUMAN);
 					NumberActor++;
-					UE_LOG(LogTemp, Warning, TEXT("Actor dopo sniper : %d"),NumberActor);
+					bTimerFinished = true;
 					EndPlayerTurn();
 				}
 			}

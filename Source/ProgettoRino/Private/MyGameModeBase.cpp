@@ -825,10 +825,10 @@ TArray<ATile*> AMyGameModeBase::FindShortestPathReachable(TArray<ATile*> Shortes
 	
 	UE_LOG(LogTemp, Warning, TEXT("WholePath è : %d "), ShortestPath.Num());
 
-	if (ShortestPath.Num() > MaxMovement)
+	if (ShortestPath.Num() > (MaxMovement + 1))
 	{
 		int32 Step = 0;
-		while (Step < MaxMovement)
+		while (Step < (MaxMovement+1))
 		{
 			PathReachable.Add(ShortestPath[Step]);
 			Step++;
