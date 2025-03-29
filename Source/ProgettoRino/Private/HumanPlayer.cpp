@@ -418,7 +418,7 @@ void AHumanPlayer::OnClick()
 				
 				else
 				{
-					UE_LOG(LogTemp, Warning, TEXT("Cella non tua scemo"));
+					UE_LOG(LogTemp, Warning, TEXT("Cella non tua"));
 				}
 			}
 		}
@@ -476,12 +476,28 @@ void AHumanPlayer::CheckEndTurn()
 	{
 		EndPlayerTurn();
 	}
-	if (bIsBrawlerMoved && SniperUnit == nullptr && AttackableEnemiesBrawler.Num() == 0)
+	if (bIsBrawlerMoved && SniperUnit == nullptr)
 	{
+		AGameField* Field = Cast<AGameField>(UGameplayStatics::GetActorOfClass(GetWorld(), AGameField::StaticClass()));
+		TSet<ATile*> AdjacentTiles = Field->GetAdjacentTiles(BrawlerUnit->GetTile());
+		bool Founded = false;
+		for (ATile* Tile : AdjacentTiles)
+		{
+			if (Tile->GetTileStatus() == ETileStatus::BRAWLERRANDOM || Tile->GetTileStatus() == ETileStatus::SNIPERRANDOM)
+			{
+				Founded = true;
+			}
+		}
+		if (Founded)
+			return;
 		EndPlayerTurn();
 	}
-	if (bIsSniperMoved && BrawlerUnit == nullptr && AttackableEnemiesSniper.Num() == 0)
+	if (bIsSniperMoved && BrawlerUnit == nullptr)
 	{
+		AGameField* Field = Cast<AGameField>(UGameplayStatics::GetActorOfClass(GetWorld(), AGameField::StaticClass()));
+		AttackableEnemiesSniper = Field->GetAttackableEnemies(SniperUnit,PlayerNumber);
+		if (AttackableEnemiesSniper.Num() > 0)
+			return;
 		EndPlayerTurn();
 	}
 }

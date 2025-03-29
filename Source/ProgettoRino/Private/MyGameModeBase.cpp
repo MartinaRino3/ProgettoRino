@@ -193,10 +193,6 @@ void AMyGameModeBase::SpawnActors(int32 Player, FVector &CurrPosition,FString Ty
 				Players[Player]->SetSniper(NewSniper);
 				NewSniper->bIsSpawned = true;
 			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("C'è qualche errore perchè non esiste il player che sta giocando"));
-			}
 		}
 	}
 }
@@ -307,19 +303,16 @@ void AMyGameModeBase::MoveUnit(APawn* Unit, ATile* NewTile)
 {
 	if (Unit->GetOwner() == HumanPlayer && CurrentPlayer != 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Movimento bloccato: Non è il turno di questa unità!"));
 		return;
 	}
 
 	if (Unit->GetOwner() == RandomPlayer && CurrentPlayer != 1)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Movimento bloccato: Non è il turno di questa unità!"));
 		return;
 	}
 	
 	if (!Unit || !NewTile)
 	{
-		UE_LOG(LogTemp, Error, TEXT("MoveUnit o Unit nulli!"));
 		return;
 	}
 
@@ -341,7 +334,6 @@ void AMyGameModeBase::MoveUnit(APawn* Unit, ATile* NewTile)
 	
 	if (Path.Num() == 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("MoveUnit -> Nessun percorso trovato!"));
 		return;
 	}
 	
@@ -351,13 +343,11 @@ void AMyGameModeBase::MoveUnit(APawn* Unit, ATile* NewTile)
 	
 	if (Brawler && (Path.Num()-1 > Brawler->MaxDistance))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Movimento troppo lungo! Range massimo: %d, percorso richiesto: %d"), Brawler->MaxDistance, Path.Num());
 		return;
 	}
 
 	else if (Sniper && (Path.Num()-1 > Sniper->MaxDistance))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Movimento troppo lungo! Range massimo: %d, percorso richiesto: %d"), Sniper->MaxDistance, Path.Num());
 		return;
 	}
 
@@ -677,7 +667,6 @@ void AMyGameModeBase::Lose()
 
 FString AMyGameModeBase::ConvertPosition(int32 X, int32 Y)
 {
-	UE_LOG(LogTemp, Warning, TEXT("✅ CreateHistory chiamata!"));
 	int32 Column = X + 1;
 	TCHAR Row = 'A' + Y;   
 	return FString::Printf(TEXT("%c%d"), Row, Column);
@@ -821,10 +810,6 @@ TArray<ATile*> AMyGameModeBase::FindShortestPathReachable(TArray<ATile*> Shortes
 		MaxMovement = RandomPlayer->SniperUnit->MaxDistance;
 	}
 
-	//TArray<ATile*> WholePath = GField->FindShortestPath(StartTile,GoalTile);
-	
-	UE_LOG(LogTemp, Warning, TEXT("WholePath è : %d "), ShortestPath.Num());
-
 	if (ShortestPath.Num() > (MaxMovement + 1))
 	{
 		int32 Step = 0;
@@ -833,7 +818,6 @@ TArray<ATile*> AMyGameModeBase::FindShortestPathReachable(TArray<ATile*> Shortes
 			PathReachable.Add(ShortestPath[Step]);
 			Step++;
 		}
-		UE_LOG(LogTemp, Warning, TEXT("PathReachable è : %d "), PathReachable.Num());
 		return PathReachable;
 	}
 
